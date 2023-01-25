@@ -1,17 +1,17 @@
 ##Docker
 1. docker --help
-2. docker build --help
-3. docker run -it --entrypoint=bash python:3.9 
-3.1 pip list
+1.2. docker build --help
+2. docker run -it --entrypoint=bash python:3.9 
+2.1 pip list
 
 ##SQL
-4. 
+3. 
 SELECT count(1)
 FROM green_taxi_data
 WHERE CAST(lpep_pickup_datetime AS DATE) = CAST('2019-01-15' AS DATE)
 AND CAST(lpep_dropoff_datetime AS DATE) = CAST('2019-01-15' AS DATE)
 
-5. 
+4. 
 SELECT CAST(lpep_pickup_datetime AS DATE) as pickup_date,
 MAX(trip_distance) as max_distance
 FROM green_taxi_data
@@ -19,4 +19,28 @@ WHERE CAST(lpep_pickup_datetime AS DATE) IN (CAST('2019-01-15' AS DATE), CAST('2
 GROUP BY 1
 ORDER BY 2 DESC
 
-6. 
+5. 
+SELECT passenger_count,
+count(1) as trips_nb
+FROM green_taxi_data
+WHERE passenger_count IN (2,3)
+AND CAST(lpep_pickup_datetime AS DATE) = CAST('2019-01-01' AS DATE)
+GROUP BY 1;
+
+6.
+WITH a AS (
+SELECT  lpep_pickup_datetime,
+		lpep_dropoff_datetime,
+		tip_amount,
+		zpu."Zone" AS "pick_up_loc",
+		zdo."Zone" AS "dropoff_loc"
+FROM green_taxi_data t
+	JOIN zones zpu ON t."PULocationID" = zpu."LocationID"
+	JOIN zones zdo ON t."DOLocationID" = zdo."LocationID"
+)
+SELECT dropoff_loc,
+MAX(tip_amount) as max_distance
+FROM a
+WHERE pick_up_loc = 'Astoria'
+GROUP BY 1
+ORDER BY 2 DESC
