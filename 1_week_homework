@@ -1,0 +1,22 @@
+##Docker
+1. docker --help
+2. docker build --help
+3. docker run -it --entrypoint=bash python:3.9 
+3.1 pip list
+
+##SQL
+4. 
+SELECT count(1)
+FROM green_taxi_data
+WHERE CAST(lpep_pickup_datetime AS DATE) = CAST('2019-01-15' AS DATE)
+AND CAST(lpep_dropoff_datetime AS DATE) = CAST('2019-01-15' AS DATE)
+
+5. 
+SELECT CAST(lpep_pickup_datetime AS DATE) as pickup_date,
+MAX(trip_distance) as max_distance
+FROM green_taxi_data
+WHERE CAST(lpep_pickup_datetime AS DATE) IN (CAST('2019-01-15' AS DATE), CAST('2019-01-18' AS DATE), CAST('2019-01-28' AS DATE), CAST('2019-01-10' AS DATE))
+GROUP BY 1
+ORDER BY 2 DESC
+
+6. 
